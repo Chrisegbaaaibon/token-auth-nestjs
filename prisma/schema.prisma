@@ -21,11 +21,10 @@ model User {
 }
 
 model Todo{
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
+  id          String @id @default(auto()) @map("_id") @db.ObjectId 
   description String
-  completed   Boolean
-  userId      String @db.ObjectId
+  completed   Boolean? @default(false)
+  userId      String @db.ObjectId @map("userId")
   user        User @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
