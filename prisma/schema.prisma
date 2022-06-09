@@ -10,11 +10,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model User {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   email       String @unique
   password    String
   hashedRT   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  todos     Todo[]
+}
+
+model Todo{
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  completed   Boolean
+  userId      String @db.ObjectId
+  user        User @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
