@@ -1,52 +1,54 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { TodoDto } from 'src/auth/dto';
+import { Todo } from '@prisma/client';
 
 @Injectable()
 export class TodoService {
     constructor( private prisma: PrismaService) {}
 
-    async createTodo(dto: TodoDto) { 
-        const newTodo = await this.prisma.todo.create({
-            data: {
-                description: dto.description,
-                userId: dto.userId,       
-            }
-            
-        })
-        const user = await this.prisma.user.findUnique({
-            where:{
-                id: dto.userId
-            }
-        })
-        if(!user) throw new ForbiddenException('Please create a user first')
-        
-        return {
-            id: newTodo.id,
-            description: newTodo.description,
-        }
-
-    }
-
-    async updateTodo(dto: TodoDto, id: string) {
-       const updateTodo = await this.prisma.todo.update({
-            where: {
-                id: dto.id
+    async createTodo(dto: TodoDto, userId: string)   { 
+        const createTodo = await this.prisma.user.update({
+            where:{ 
+                id: userId
             },
-            data: {
-                description: dto.description,
+            data:{
+                todos:{
+                    create:{
+                        description: dto.description,
+                    }
+                }
             }
         })
+
         return {
-           updateTodo: updateTodo
+            createTodo: createTodo
         }
     }
 
-    async deleteTodo() {
-        return 'This action deletes a todo.';
+    async updateTodo(dto: TodoDto,  todoId: string): Promise<Todo> {
+      return this.prisma.todo.update({
+        where: {
+            id: todoId
+        },
+        data: {
+            description: dto.description,
+            completed: dto.completed,
+        }
+      })
+       
     }
 
-    async getTodo() {
-        return 'This action gets a todo.';
+    async deleteTodo( id: string): Promise<Todo> {
+        return this.prisma.todo.delete({
+            where: {
+                id: id
+            }
+        })
+        
+    }
+
+    async getTodo():Promise<Todo[]> {
+        return this.prisma.todo.findMany()
     }
 }

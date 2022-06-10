@@ -1,35 +1,35 @@
-import { Body, Controller, HttpCode, Post, HttpStatus, Param, Patch } from '@nestjs/common';
-import { Public } from 'src/auth/common/decorators';
+import { Body, Controller, HttpCode, Post, HttpStatus, Param, Patch, Delete, Get } from '@nestjs/common';
+import { GetCurrentUserId, Public } from 'src/auth/common/decorators';
 import { TodoService } from './todo.service';
 import { TodoDto } from '../auth/dto';
+import { Todo } from '@prisma/client';
 
-@Controller('todo')
+@Controller('todos')
 export class TodoController {
     constructor(private todoService: TodoService) {}
     
     @Public()
-    @Post('create')
+    @Patch('create/:id')
     @HttpCode(HttpStatus.CREATED)
-    async createTodo(@Body() dto: TodoDto): Promise<any> {
-        return this.todoService.createTodo(dto)
+    async createTodo(@Body()dto: TodoDto, @Param("id") userId: string ): Promise<any> {
+        return this.todoService.createTodo(dto, userId);
     }
 
-    @Public()
     @Patch('update/:id')
     @HttpCode(HttpStatus.OK)
-    async updateTodo(@Body() dto: TodoDto, @Param() id: string ) {
-        this.todoService.updateTodo(dto, id);
+    async updateTodo(@Body() dto: TodoDto, @Param("id") todoId: string  ): Promise<Todo>{
+        return this.todoService.updateTodo(dto, todoId); 
     }
 
-    @Post('delete')
-    async deleteTodo() {
-        this.todoService.deleteTodo();
-        return 'This action deletes a todo.';
+    @Delete('delete/:id')
+    async deleteTodo(@Param("id") id: string): Promise<Todo> {
+        // this.todoService.deleteTodo();
+        return this.todoService.deleteTodo(id);
     }
 
     @Public()
-    @Post('get')
-    async getTodo() {
-        this.todoService.getTodo();
+    @Get()
+    async getTodo(): Promise<Todo[]> {
+      return  this.todoService.getTodo();
     }
 }

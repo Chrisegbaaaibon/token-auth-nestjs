@@ -7,11 +7,7 @@ export class TodoDto {
 
 
     
-    @IsString()
-    @IsNotEmpty()
-    userId:string;
-
-    @IsString()
+    
     id: string;
 
     completed: boolean;
