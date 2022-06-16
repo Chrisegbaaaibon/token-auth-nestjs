@@ -4,6 +4,7 @@ import { Tokens } from './types';
 import { AuthGuard } from '@nestjs/passport';
 import { GetCurrentUser, GetCurrentUserId, Public } from './common/decorators';
 import { AtGuard, RtGuard } from './common/guards';
+import { AuthDto } from './dto';
 
 @Controller('api')
 export class AuthController {
