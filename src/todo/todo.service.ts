@@ -7,7 +7,7 @@ import { Todo } from '@prisma/client';
 export class TodoService {
     constructor( private prisma: PrismaService) {}
 
-    async createTodo(dto: TodoDto, userId: string)   { 
+    async createTodo(dto: TodoDto, userId: string): Promise<any>   { 
         const createTodo = await this.prisma.user.update({
             where:{ 
                 id: userId
@@ -22,7 +22,8 @@ export class TodoService {
         })
 
         return {
-            createTodo: createTodo
+            createTodo: createTodo,
+
         }
     }
 

@@ -11,7 +11,7 @@ export class TodoController {
     @Public()
     @Patch('create/:id')
     @HttpCode(HttpStatus.CREATED)
-    async createTodo(@Body()dto: TodoDto, @Param("id") userId: string ): Promise<any> {
+    async createTodo(@Body()dto: TodoDto, @Param("id") userId: string ): Promise<Todo> {
         return this.todoService.createTodo(dto, userId);
     }
 
