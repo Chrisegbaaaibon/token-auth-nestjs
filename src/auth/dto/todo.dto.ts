@@ -1,14 +1,11 @@
-import { IsString, IsNotEmpty, IsBoolean } from "class-validator";
+import { IsString, IsNotEmpty, IsBoolean } from 'class-validator';
 
 export class TodoDto {
-    @IsString()
-    @IsNotEmpty()
-    description:string;
+  @IsString()
+  @IsNotEmpty()
+  description: string;
 
+  id: string;
 
-    
-    
-    id: string;
-
-    completed: boolean;
+  completed: boolean;
 }
