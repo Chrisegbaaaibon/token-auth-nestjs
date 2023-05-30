@@ -6,14 +6,18 @@ import { AtGuard } from './auth/common/guards';
 import { PrismaModule } from './prisma/prisma.module';
 import { TodoModule } from './todo/todo.module';
 
-
-  @Module({
-    imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, PrismaModule, TodoModule,],
-    providers: [
-      {
-        provide: APP_GUARD,
-        useClass: AtGuard,
-      },
-    ],
-  })
+@Module({
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    AuthModule,
+    PrismaModule,
+    TodoModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AtGuard,
+    },
+  ],
+})
 export class AppModule {}
